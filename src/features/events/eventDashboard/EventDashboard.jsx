@@ -1,28 +1,63 @@
-import React , {useState} from 'react'
-import { Grid } from 'semantic-ui-react'
-import EventForm from '../eventForm/EventForm'
-import EventList from './EventList'
-import {sampleData} from '../../../app/api/sampleData';
+import React, { useState } from "react";
+import { Grid } from "semantic-ui-react";
+import EventForm from "../eventForm/EventForm";
+import EventList from "./EventList";
+import { sampleData } from "../../../app/api/sampleData";
 
-//EventDashboard is the parent of EventList 
+//EventDashboard is the parent of EventList
 /**using react hooks one of which is useState */
-export default function EventDashboard({formOpen, setFormOpen}){
-    //two piece of state for useState (react hooks)
-    const [events, setEvents] = useState(sampleData);
+export default function EventDashboard({
+  formOpen,
+  setFormOpen,
+  selectEvent,
+  selectedEvent,
+}) {
+  //two piece of state for useState (react hooks)
+  const [events, setEvents] = useState(sampleData);
 
-    return(
-        //passed the properties to the child component(EventList)
-        //the properties is the events in teh sampleData,js file
-        <Grid>
-            <Grid.Column width={10}>
-               <EventList events={events} />
-            </Grid.Column>
-            <Grid.Column width={6}>
-                {formOpen && 
-                    <EventForm setFormOpen={setFormOpen}/>
-                }
-            </Grid.Column>
-        </Grid>
+  //a handler(function) to create an event
+  function handleCreateEvent(event) {
+    //using spread operator to copy all the values
+    setEvents([...events, event]); //...events returns a new array of event
+  }
 
-    )
+  //func to handle update event
+  /** event.map loops over the events */
+  function handleUpdateEvent(updatedEvent) {
+    setEvents(
+      events.map((evt) => (evt.id === updatedEvent.id ? updatedEvent : evt))
+    );
+    selectEvent(null);
+  }
+
+  //func to handle delete
+  function handleDeleteEvent(eventId) {
+    setEvents(events.filter((evt) => evt.id !== eventId));
+  }
+
+  return (
+    //passed the properties to the child component(EventList)
+    //the properties is the events in the sampleData,js file
+    <Grid>
+      <Grid.Column width={10}>
+        <EventList
+          events={events}
+          selectEvent={selectEvent}
+          deleteEvent={handleDeleteEvent}
+        />
+      </Grid.Column>
+      <Grid.Column width={6}>
+        {formOpen && (
+          <EventForm
+            setFormOpen={setFormOpen}
+            setEvents={setEvents}
+            createEvent={handleCreateEvent}
+            selectedEvent={selectedEvent}
+            updateEvent={handleUpdateEvent}
+            key={selectedEvent ? selectedEvent.id : null}
+          />
+        )}
+      </Grid.Column>
+    </Grid>
+  );
 }
