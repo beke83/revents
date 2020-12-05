@@ -2,3 +2,32 @@ Installed Libraries
 - semantic-ui-react
 - semantic-ui-css
 - cuid
+- redux
+
+Redux (State Management)
+Predictable state Cointainer for javascript apps. this allows to store app state centrally.
+
+Pure fuctions
+  * Given the same input, will always return the same output
+  * Produces no side effects
+
+Reducers specifies how the app state changes in respone to action sent to the store
+
+Setting up Redu
+ * Configure the store
+ * create a root Reducers
+ * Add the store to he index.js file
+
+** Redux can store either simple plain objects or arrays
+** when we want to update our store state we dispatch an action
+** Actions are plain object
+
+*  To create our store
+ - we use the createStore function from redux
+ - we return the createStore method along with 'tetReducer' as a parameter
+
+* How to tell react app about the react store
+ -in the index,js file we wrap our entire application with the provider we get from redux
+
+ ** Reducers stroe a slice of the store itself
+ ** 'dispatch: dispatches or sends an action
