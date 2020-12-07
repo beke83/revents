@@ -1,24 +1,20 @@
-import React, { useState } from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import React from "react";
+import { useSelector } from "react-redux";
+import { NavLink} from "react-router-dom";
 import { Button, Container, Menu } from "semantic-ui-react";
 import SignedInMenu from "./SignedInMenu";
 import SignedOutMenu from "./SignOutMenu";
 
 export default function NavBar({ setFormOpen }) {
-  //use local state to fake authentication for user
-  const [authenticated, setAuthenticated] = useState(false);
 
   //the Navbar is not been provided by a Route so its not not have
   //access to 'useHistory'
   //utilize useHistory hook to navigate back to home page after signout
 
-  const history = useHistory(); //this provides access to the useHistory from react-router-dom
+  //const history = useHistory(); //this provides access to the useHistory from react-router-dom
 
-  //
-  function handleSignOut(){
-    setAuthenticated(false)
-    history.push('/');
-  }
+    const {authenticated} = useSelector(state => state.auth);
+
 
   return (
     // 'as': meaning the Menu.Item should act 'as' a NavLink
@@ -36,9 +32,9 @@ export default function NavBar({ setFormOpen }) {
           </Menu.Item>
         )}
         {authenticated ? (
-          <SignedInMenu signOut={handleSignOut} />
+          <SignedInMenu  />
         ) : (
-            <SignedOutMenu setAuthenticated={setAuthenticated} />
+            <SignedOutMenu />
           )}
       </Container>
     </Menu>
