@@ -3,6 +3,7 @@ Installed Libraries
 - semantic-ui-css
 - cuid
 - redux
+- redux-thunk
 
 Redux (State Management)
 Predictable state Cointainer for javascript apps. this allows to store app state centrally.
@@ -31,3 +32,5 @@ Setting up Redu
 
  ** Reducers stroe a slice of the store itself
  ** 'dispatch: dispatches or sends an action
+
+** Redux Thunk acts s a middleware that we add to our store and the middleware allows to use the store dispatch inside our action creators 
