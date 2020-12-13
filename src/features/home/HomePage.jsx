@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import {
   Button,
   Container,
@@ -10,7 +10,8 @@ import {
 } from "semantic-ui-react";
 
 // destructure
-export default function HomePage(history) {
+export default function HomePage() {
+  const history = useHistory();
   return (
     <Segment inverted textAlign='center' vertical className='masthead'>
       <Container>

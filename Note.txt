@@ -34,3 +34,5 @@ Setting up Redu
  ** 'dispatch: dispatches or sends an action
 
 ** Redux Thunk acts s a middleware that we add to our store and the middleware allows to use the store dispatch inside our action creators 
+
+if we want to carry out an operation such as query an api we use the useEffect hook, the useEffect hook allows us to do somethung when the component loads(mount) and unloads(unmount)

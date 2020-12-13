@@ -1,16 +1,38 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { Grid} from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Grid } from "semantic-ui-react";
+import { listenToEventFromFirestore } from "../../../app/firestore/firestoreService";
+import useFirestoreDoc from "../../../app/hooks/useFirestoreDoc";
+import { listenToEvents } from "../eventActions";
 import EventDetailedChat from "./EventDetailedChat";
 import EventDetailedHeader from "./EventDetailedHeader";
 import EventDetailedInfo from "./EventDetailedInfo";
 import EventDetailedSidebar from "./EventDetailedSidebar";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { Redirect } from "react-router-dom";
 
 //detructure the match object that we are intrested in which give us
 //access to the parameters
 export default function EventDetailedPage({ match }) {
   //we use Selector to select the particular event in the event store
-  const event = useSelector(state => state.event.events.find(e => e.id === match.params.id));
+  const event = useSelector((state) =>
+    state.event.events.find((e) => e.id === match.params.id)
+  );
+
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.async);
+
+  useFirestoreDoc({
+    query: () => listenToEventFromFirestore(match.params.id),
+    data: (event) => dispatch(listenToEvents([event])),
+    deps: [match.params.id, dispatch],
+  });
+
+  if (loading || (!event && !error)) {
+    return <LoadingComponent content='Loading events...' />;
+  }
+
+  if(error) return <Redirect to='/error' />
 
   return (
     <Grid>

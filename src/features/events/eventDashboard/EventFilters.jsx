@@ -6,7 +6,7 @@ export default function EventFilters(){
     return(
         <>
         <Menu vertical size='large' style={{width: '100%'}}>
-            <Header icon='filter' attatched color='teal' content='Filters'/>
+            <Header icon='filter' attatched="true" color='teal' content='Filtersevent'/>
             <Menu.Item content='All Events' />
             <Menu.Item content="I'm going" />
                 <Menu.Item content="I'm hosting" />
