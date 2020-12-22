@@ -4,10 +4,11 @@ import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Dropdown, Image, Menu } from "semantic-ui-react";
 import { signOutFirebase } from "../../app/firestore/firebaseService";
+import { listenToCurrentUserProfile } from "../profiles/profileActions";
 
 export default function SignedInMenu() {
   const history = useHistory();
-  const { currentUser } = useSelector((state) => state.auth);
+  const { currentUserProfile } = useSelector((state) => state.profile);
 
   async function handleSignOut() {
     try {
@@ -23,9 +24,9 @@ export default function SignedInMenu() {
       <Image
         avatar
         spaced='right'
-        src={currentUser.photoURL || "/assets/user.png"}
+        src={currentUserProfile.photoURL || "/assets/user.png"}
       />
-      <Dropdown pointing='top left' text={currentUser.displayName}>
+      <Dropdown pointing='top left' text={currentUserProfile.displayName}>
         <Dropdown.Menu>
           <Dropdown.Item
             as={Link}
@@ -35,7 +36,7 @@ export default function SignedInMenu() {
           />
           <Dropdown.Item
             as={Link}
-            to={`/profile/${currentUser.uid}`}
+            to={`/profile/${currentUserProfile.id}`}
             text='Profile'
             icon='user'
           />

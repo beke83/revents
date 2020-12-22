@@ -26,7 +26,7 @@ export function dataFromSnapshot(snapshot) {
 }
 
 export function listenToEventsFromFirestore() {
-  return db.collection("events").orderBy('date');
+  return db.collection("events").orderBy("date");
 }
 
 export function listenToEventFromFirestore(eventId) {
@@ -45,29 +45,47 @@ export function addEventToFirestore(event) {
   });
 }
 
-export function updateEventInFirestore(event){
-  return db.collection('events').doc(event.id).update(event)
-}  
-
-export function deleteEventInFirestore(eventId){
-  return db.collection('events').doc(eventId).delete();
+export function updateEventInFirestore(event) {
+  return db.collection("events").doc(event.id).update(event);
 }
 
-export function cancelEventToggle(event){
-  return db.collection('events').doc(event.id).update({
-    isCancelled: !event.isCancelled
-  })
+export function deleteEventInFirestore(eventId) {
+  return db.collection("events").doc(eventId).delete();
+}
+
+export function cancelEventToggle(event) {
+  return db.collection("events").doc(event.id).update({
+    isCancelled: !event.isCancelled,
+  });
 }
 
 export function setUserProfileData(user) {
-  return db.collection('users').doc(user.uid).set({
-    displayName: user.displayName,
-    email: user.email,
-    photoURL: user.photoURL || null,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  })
+  return db
+    .collection("users")
+    .doc(user.uid)
+    .set({
+      displayName: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL || null,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
 }
 
-export function getUserProfile(userId){
-  return db.collection('users').doc(userId);
-} 
+export function getUserProfile(userId) {
+  return db.collection("users").doc(userId);
+}
+
+export async function updateUserProfile(profile) {
+  const user = firebase.auth().currentUser;
+  try {
+    if (user.displayName !== profile.displayName) {
+      await user.updateProfile({
+        displayName: profile.displayName,
+        description: profile.description
+      });
+    }
+    return await db.collection("users").doc(user.uid).update(profile);
+  } catch (error) {
+    throw error;
+  }
+}
